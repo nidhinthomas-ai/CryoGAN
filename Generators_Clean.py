@@ -146,12 +146,12 @@ class ProjectorModule(nn.Module):
     def VarphiGeneratorBatch(self):
 
             try:
-                out = self.VarphiGeneratorLoader.next()
+                out = next(self.VarphiGeneratorLoader)
             except StopIteration: # reshuffle the dataset
 
                 self.VarphiGeneratorLoader= iter(torch.utils.data.DataLoader(self.VarphiGenerator,batch_size=self.args.BATCH_SIZE, shuffle=True, num_workers=0, drop_last=True, pin_memory=False)   )
                     
-                out = self.VarphiGeneratorLoader.next()
+                out = next(self.VarphiGeneratorLoader)
 
             return  [element.to('cuda', non_blocking=True) for element in out]
         

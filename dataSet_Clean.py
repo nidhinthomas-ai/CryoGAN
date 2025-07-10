@@ -84,7 +84,7 @@ class Cryo(Dataset):
                 boxName = "./Datasets/Betagal-Experimental/MicrographDetails/EMD-2984_{:04d}.box".format(micrographNum)
 
                 numCols = 4
-                boxes = np.fromfile(boxName, sep="\t", dtype=np.int).reshape(-1, numCols)
+                boxes = np.fromfile(boxName, sep="\t", dtype=int).reshape(-1, numCols)
                 for i in range(len(boxes)):
                     counterParticle=counterParticle+1
                     self.MicrographFromIdx[counterParticle,0]=micrographNum

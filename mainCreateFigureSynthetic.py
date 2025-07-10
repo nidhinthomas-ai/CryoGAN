@@ -22,10 +22,7 @@ if __name__ == '__main__':
     parser.add_argument('config', default="Configs/default.cfg", help="Specify config file", metavar="FILE")
     args = parser.parse_args()
     
-    cfg.load_config(args.config)
-    cfg.calc_derived_params()
-
-
+    cfg = cfg(args.config)
 
     # some parameters:
     depth = 1

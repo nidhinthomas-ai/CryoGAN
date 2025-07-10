@@ -95,7 +95,7 @@ class GenerateData:
              self.gen.X.data=self.GroundTruth
         elif 'Betagal' in self.args.dataset:
             print("Using 2.5 A molmap")
-            fittedBetagal=torch.Tensor( mrcfile.open('./Datasets/Betagal-Synthetic/fitted_betagal_2.5A.mrc').data).to(device)
+            fittedBetagal=torch.Tensor( mrcfile.open('./Datasets/Betagal-Synthetic/molmap2.5-Downsampled2-translationOff-EstimatedNoise-snr_0.1/fitted_betagal_2.5A.mrc').data).to(device)
             fittedBetagal=torch.nn.functional.avg_pool3d(fittedBetagal.unsqueeze(0).unsqueeze(0), kernel_size=self.args.DownSampleRate, stride=self.args.DownSampleRate, padding=0).squeeze()
            
             n=self.args.VolumeSize

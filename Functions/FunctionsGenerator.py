@@ -47,8 +47,8 @@ def CTFforward(h, x):
     
     xpadded=F.pad(x, pad, "constant", 0)
     
-    xConvolved=FFTConv(xpadded, h, plot=doPlots) [0][:,:,paddingLength: paddingLength+x.size()[-2],  paddingLength:paddingLength+x.size()[-1]]
-
+    # xConvolved=FFTConv(xpadded, h, plot=doPlots) [0][:,:,paddingLength: paddingLength+x.size()[-2],  paddingLength:paddingLength+x.size()[-1]]
+    xConvolved=FFTConv(xpadded, h)[0][:,:,paddingLength: paddingLength+x.size()[-2],  paddingLength:paddingLength+x.size()[-1]]
     return xConvolved
     
 

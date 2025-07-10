@@ -1,6 +1,6 @@
 """ Loads program configuration into a config object."""
 
-from backports import configparser 
+import configparser 
 import numpy as np
 from copy import copy, deepcopy
 from IPython.core.debugger import set_trace

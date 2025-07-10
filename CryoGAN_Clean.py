@@ -122,9 +122,13 @@ class ProGAN:
             
             for i in range(epoch_gen_iterations):  
                 if self.args.GaussianFilterProjection:
-                    perc=(float(i)/(epoch_gen_iterations-1) )
-                    self.args.GaussianSigma=(perc *self.args.GaussianSigmaEpochFinal+  (1.0-perc)*self.args.GaussianSigmaEpochInitial) 
-                
+                    # Prevent division by zero if there's only one generator iteration
+                    if epoch_gen_iterations > 1:
+                        perc = float(i) / (epoch_gen_iterations - 1)
+                    else:
+                        perc = 1.0
+
+                    self.args.GaussianSigma = (perc * self.args.GaussianSigmaEpochFinal + (1.0 - perc) * self.args.GaussianSigmaEpochInitial)
                 step=step+1
                 self.step=step
                 self.ratio=float(step)/(total_gen_iterations)
@@ -138,15 +142,15 @@ class ProGAN:
                 
                 for Diter in range(self.args.dis_iterations):
                    
-                    images=dataIter.next()
+                    images=next(dataIter)
                     
                     dis_lossIter, wass_lossIter, real_samples = self.optimize_discriminator(images)
                     dis_loss=dis_loss + dis_lossIter/float(self.args.dis_iterations)
                     wass_loss=wass_loss + wass_lossIter/float(self.args.dis_iterations)
 
 
-                gen_loss, fake_samples, projNoisy, projCTF, projClean, Noise = self.optimize_generator(ChangeAngles=True)
-               
+                # gen_loss, fake_samples, projNoisy, projCTF, projClean, Noise = self.optimize_generator(ChangeAngles=True)
+                gen_loss, fake_samples, projNoisy, projCTF, projClean, Noise = self.optimize_generator(images, multipleNoise=False)
                 with torch.no_grad():
                     
                     self.gen.Constraint(ratio=self.ratio)

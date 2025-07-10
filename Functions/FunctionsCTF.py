@@ -113,7 +113,8 @@ def CTFGenerator(args, defocusU, defocusV, AngleAstigmatism):
 
     hFourier=torch.stack((hreal, torch.zeros_like(hreal)),-1).cuda()
         
-    hSpatial=torch.ifft(batch_ifftshift2d(hFourier),2, normalized=False)
+    # hSpatial=torch.ifft(batch_ifftshift2d(hFourier),2, normalized=False)
+    hSpatial=torch.fft.ifft(batch_ifftshift2d(hFourier), n=None, dim=-1, norm='backward').real
 
     hSpatial=batch_fftshift2d(hSpatial)
 

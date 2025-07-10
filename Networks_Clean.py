@@ -64,7 +64,7 @@ class cryoGenerator(th.nn.Module):
         """
         forward pass of the Generator
         """
-        projNoisy, projCTF, projClean, self.Volume, Noise=self.G(self.X,real_samples, ChangeAngles=ChangeAngles, ratio=ratio)
+        projNoisy, projCTF, projClean, self.Volume, Noise=self.G(self.X, ChangeAngles=ChangeAngles, ratio=ratio)
         fake_samples=    projNoisy
         return fake_samples, projNoisy, projCTF, projClean, Noise
 

@@ -42,7 +42,7 @@ imshowParams = {
 
 ext = '.pdf'
 savefigParams = {
-    'bbox': 'tight'
+    'bbox_inches': 'tight'
     }
 
 
@@ -200,7 +200,8 @@ def save_fig_double(x, y, path, name, iteration=None, doCurrent=False, \
     if iteration is not None:
         name = iteration + "-" + name
         
-    fig.savefig(os.path.join(path, name + ext),  **savefigParams )
+    # fig.savefig(os.path.join(path, name + ext),  **savefigParams )
+    fig.savefig(os.path.join(path, name + ext), bbox_inches='tight', pad_inches=-0.1)
     
 
     plt.close(fig)

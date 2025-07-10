@@ -125,24 +125,39 @@ def FFTConv(imgs, filt, plot=False):
     filt = roll_n(filt, 3, filtSize[1]//2)
 
     
-    imgsFourier = torch.rfft(imgs,2, onesided=False) # rfft doesn't require complex input
-    filtFourier = torch.rfft(filt, 2, onesided=False)
+    # imgsFourier = torch.rfft(imgs,2, onesided=False) # rfft doesn't require complex input
+    # filtFourier = torch.rfft(filt, 2, onesided=False)
 
-    # Extract the real and imaginary parts
-    imgR,imgIm = torch.unbind(imgsFourier , -1)
-    filtR,filtIm = torch.unbind(filtFourier , -1)
+    # # Extract the real and imaginary parts
+    # imgR,imgIm = torch.unbind(imgsFourier , -1)
+    # filtR,filtIm = torch.unbind(filtFourier , -1)
+
+    # if plot==True:
+    
+    #     save_fig_double(filtR.data.cpu(),filtIm.data.cpu(), './', 'CurrentCTF-Fourier',  iteration=None, Title1='Real', Title2='Imag' )
+    #     save_fig_double((imgR+1e-8).abs().log().data.cpu(),(imgIm+1e-8).abs().log().data.cpu(), './', 'CurrentProj-Fourier', iteration=None, Title1='Real', Title2='Imag' )
+        
+    # # Do element wise complex multiplication
+    # imgFilterdR=imgR*filtR-imgIm*filtIm
+    # imgFilteredIm=imgIm*filtR+imgR*filtIm
+  # New replacement code for lines 128-144
+
+    # Perform 2D FFT
+    imgsFourier = torch.fft.fft2(imgs)
+    filtFourier = torch.fft.fft2(filt)
 
     if plot==True:
-    
-        save_fig_double(filtR.data.cpu(),filtIm.data.cpu(), './', 'CurrentCTF-Fourier',  iteration=None, Title1='Real', Title2='Imag' )
-        save_fig_double((imgR+1e-8).abs().log().data.cpu(),(imgIm+1e-8).abs().log().data.cpu(), './', 'CurrentProj-Fourier', iteration=None, Title1='Real', Title2='Imag' )
-        
-    # Do element wise complex multiplication
-    imgFilterdR=imgR*filtR-imgIm*filtIm
-    imgFilteredIm=imgIm*filtR+imgR*filtIm
+        # The .real and .imag attributes are used on native complex tensors
+        save_fig_double(filtFourier.real.data.cpu(), filtFourier.imag.data.cpu(), './', 'CurrentCTF-Fourier',  iteration=None, Title1='Real', Title2='Imag' )
+        save_fig_double((imgsFourier.real+1e-8).abs().log().data.cpu(), (imgsFourier.imag+1e-8).abs().log().data.cpu(), './', 'CurrentProj-Fourier', iteration=None, Title1='Real', Title2='Imag' )
 
-    imgFiltered = torch.stack((imgFilterdR, imgFilteredIm), -1)
-    imgFiltered = torch.irfft(imgFiltered,2, onesided=False)
+    # Perform complex multiplication directly
+    imgFilteredFourier = imgsFourier * filtFourier
+
+    # Perform inverse 2D FFT and take the real part
+    imgFiltered = torch.fft.ifft2(imgFilteredFourier).real
+    # imgFiltered = torch.stack((imgFilterdR, imgFilteredIm), -1)
+    # imgFiltered = torch.irfft(imgFiltered,2, onesided=False)
 
 
 

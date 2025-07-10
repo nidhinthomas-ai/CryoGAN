@@ -49,7 +49,7 @@ class VarphiGenerator(Dataset):
         if self.args.dataset=='Betagal'or self.args.dataset=='Betagal-Synthetic':
 
             
-                self.BackgroundPath='./Datasets/betagal/Background-384/'
+                self.BackgroundPath='./Datasets/Betagal-Experimental/Background-384/'
                
               
                 print("Background coming from " +self.BackgroundPath)
@@ -76,7 +76,7 @@ class VarphiGenerator(Dataset):
 
                 
                 self.MicrographFromIdx=np.zeros((50000,1))
-                dataDir = "/home/jyoo/cryoemfinal/Datasets/betagal/Micrographs"
+                dataDir = "./Datasets/Betagal-Experimental/MicrographDetails"
 
                 counterParticle=-1
                 
@@ -87,13 +87,13 @@ class VarphiGenerator(Dataset):
                     boxName = "EMD-2984_{:04d}.box".format(micrographNum)
 
                     numCols = 4
-                    boxes = np.fromfile(os.path.join(dataDir, boxName), sep="\t", dtype=np.int).reshape(-1, numCols)
+                    boxes = np.fromfile(os.path.join(dataDir, boxName), sep="\t", dtype=int).reshape(-1, numCols)
                     for i in range(len(boxes)):
                         counterParticle=counterParticle+1
                         self.MicrographFromIdx[counterParticle,0]=micrographNum
                 
-                dir= '/home/jyoo/cryoemfinal/Datasets/betagal/'
-                pathMicrographCTF=dir+'Micrographs/ctf-betagal-all-3185.txt'
+                dir= './Datasets/Betagal-Experimental/'
+                pathMicrographCTF=dir+'ctf-betagal-all-3185.txt'
                 self.pathCTF=pathMicrographCTF#'./Datasets/ctf-betagal-all-background-6370.txt'
                 
                 
